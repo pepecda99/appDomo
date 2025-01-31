@@ -1,0 +1,184 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+  <div class="view view-main">
+    <!-- Initial Page, "data-name" contains page name -->
+
+    <div class="page page-with-subnavbar">
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner sliding">
+          <div class="title" style="margin-top:5px !important">
+            <img src="img/banner_cleversuite.png"
+              alt="Apartamentos"
+              style="height:40px;" />
+          </div>
+          <div class="subnavbar">
+            <div class="subnavbar-inner">
+              <div class="segmented segmented-strong">
+                <button class="button button-small-md" id="dashboard-button">
+                  <i class="icon f7-icons">building_2</i>
+                  <span class="if-not-md">{{ title }}</span>
+                </button>
+
+                <button class="button button-small-md" id="logout-button">
+                  <i class="icon f7-icons">
+                    person_crop_circle_fill_badge_xmark
+                  </i>
+                  <span class="if-not-md">Cerrar sesión</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {#   <div class="toolbar tabbar-icons toolbar-bottom">
+        <div class="toolbar-inner">
+          <div class="tab-link">
+            <b>{{ title }}</b>
+          </div>
+        </div>
+      </div> #}
+      <div class="page-content">
+        <div class="block">
+          <span>Aqui encontrarás la información de tus viviendas</span>
+        </div>
+        <div class="list list-strong-ios list-dividers-ios inset-ios">
+          <ul>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-media">
+                <i class="icon f7-icons">square_list</i>
+              </div>
+              <div class="item-inner">
+                <div class="item-title item-floating-label">
+                  Busque su apartamento
+                </div>
+                <div class="item-input-wrap">
+                  <input type="text" placeholder="Introduzca el apartamento" />
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="list media-list list-outline-ios list-strong-ios list-dividers-ios">
+          <ul class="list" id="apartment-list">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    
+
+
+      function openApartment(uniToken, button) {
+              
+                fetch('method.php?action=sendMqtt', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            uni_token: uniToken
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.success){
+                            app.dialog.alert('Puerta abierta correctamente', 'Éxito');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al abrir la puerta:', error);
+                        app.dialog.alert('Error al abrir la puerta: ' + error, 'Error');
+                    });
+            }
+
+        function generateUrl(uniToken) {
+            window.location.href = './generateUrl.php?uni_token=' + encodeURIComponent(uniToken);
+        }
+
+        // Llamar a fetchApartments al cargar la página
+        document.addEventListener('DOMContentLoaded', fetchApartments);
+        function fetchApartments() {
+          console.log("fetchApartments");
+            fetch('/method.php?action=get_apartments', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const apartmentList = document.getElementById('apartment-list');
+                    apartmentList.innerHTML = ''; // Limpiar lista existente
+
+                    if (data.length === 0) {
+                        app.dialog.alert('No se encontraron apartamentos asociados a DomoClever.', 'Error');
+                        return;
+                    }
+
+                    data.forEach(apartment => {
+                        let HTML = '';
+                        
+                        HTML += `
+                       <li onclick="window.location.href='gestionar_vivienda.php?token=${apartment.uni_token}'">
+                            <a class="item-link item-content">
+                                <div class="item-media">
+                                    <img style="border-radius: 8px;" src="/img/icono_casa_azul_cleversuite.png" width="50" />
+                                </div>
+                                <div class="item-inner" style="align-content:center">
+                                    <div class="item-title-row">
+                                        <div class="item-title" style="flex:1">${apartment.label}</div>
+                                        <div class="item-after">
+                                            <div class="button-container">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </a>
+                        </li>
+
+                        `;
+                        apartmentList.innerHTML += HTML;
+                    });
+                    /*const apartmentList = document.getElementById('apartment-list');
+                    apartmentList.innerHTML = ''; // Limpiar lista existente
+
+                    if (data.length === 0) {
+                        apartmentList.innerHTML = '<p>No se encontraron pisos asociados a DomoClever.</p>';
+                        return;
+                    }
+
+                    /*data.forEach(apartment => {
+                        const apartmentCard = document.createElement('div');
+                        apartmentCard.className = 'apartment-card';
+                        apartmentCard.innerHTML = `
+                        <img src="../assets/images/porterillo_icon.png" alt="${apartment.ref}">
+                        <div class="apartment-info">
+                            <h3>${apartment.ref}</h3>
+                            <p>${apartment.label}</p>
+                        </div>
+                        <div class="apartment-buttons">
+                            <button class="btn-open" onclick="openApartment('${apartment.uni_token}', this)">
+                                <span class="glyphicon glyphicon-off"></span>
+                            </button>
+                            <button class="btn-share" onclick="generateUrl('${apartment.uni_token}')">
+                                <span class="glyphicon glyphicon-share"></span>
+                            </button>
+                        </div>
+                    `;
+                        apartmentList.appendChild(apartmentCard);
+                    });*/
+                    
+                })
+                .catch(error => app.dialog.alert('Error al obtener los apartamentos: ', 'Error'));
+        }
+  </script>  
+
+  {# SLider #}
+{% endblock %}

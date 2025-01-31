@@ -1,0 +1,39 @@
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent" />
+  <meta name="theme-color" content="#fff" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data:" />
+  {# si eciste conf.favicon añadelo #}
+  {% if conf.favicon is defined and conf.favicon is not empty %}
+    <link rel="icon" href="{{ conf.favicon }}" type="image/x-icon" />
+  {% endif %}
+
+  <!-- Your app title -->
+  <title>
+    {{ conf.main_title }}
+  </title>
+  <!-- Path to Framework7 Library Bundle CSS -->
+  <link rel="stylesheet"
+    href="./node_modules/framework7/framework7-bundle.css" />
+  <link rel="stylesheet"
+    href="./node_modules/framework7-icons/css/framework7-icons.css" />
+
+  <!-- Path to your custom app styles -->
+  <link rel="stylesheet" href="./css/app.css" />
+  <link rel="stylesheet" href="./css/unlock.css" />
+  <script type="text/javascript"
+    src="./node_modules/framework7/framework7-bundle.js"></script>
+
+  <!-- Path to your app js -->
+  <script type="text/javascript" src="./js/app.js"></script>
+  <script type="text/javascript" src="./js/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="./js/jquery-ui.js"></script>
+  <script type="text/javascript" src="./js/jquery.ui.touch-punch.js"></script>
+</head>

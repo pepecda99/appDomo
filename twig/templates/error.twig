@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ error_code|default('404')|raw }}
+    </title>
+    {# si existe conf.favicon añadelo #}
+    {% if conf.favicon is defined and conf.favicon is not empty %}
+      <link rel="icon" href="{{ conf.favicon }}" type="image/x-icon" />
+    {% endif %}
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      
+      body {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        background-image: url('/img/nature.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        font-family: "Courgette", sans-serif;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .text {
+        font-size: 5vmin;
+        text-align: center;
+        margin: 0.5em 0;
+      }
+
+      .text span {
+        font-size: 10vmin;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text">
+      <span>{{ error_code|default('404')|raw }}</span>
+    </div>
+    <div class="text">
+      {{ error_title|default('Ops.....')|raw }}      
+    </div>
+    <div class="text">
+      {{ error_message|default('Algo pasa por aqui')|raw }}      
+    </div>
+  </body>
+</html>

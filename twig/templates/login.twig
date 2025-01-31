@@ -1,0 +1,66 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+  <div class="page no-navbar no-toolbar no-swipeback login-screen-page">
+    <div class="page-content login-screen-content">
+      <div class="login-screen-title">
+        <img src="img/banner_cleversuite.png"
+          alt="Apartamentos"
+          style="width:90%;" />
+      </div>
+      <div class="card card-raised">
+        <div class="card-header"></div>
+        <div class="card-content card-content-padding"
+          style="display: flex;align-items: center;justify-content: center;">
+          <form id="login-form" method="POST" action="method.php?action=login">
+            <div class="list">
+              <ul>
+                <li class="item-content item-input item-input-outline">
+                  <div class="item-media">
+                    <i class="icon f7-icons">person</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" style="font-size: 20px !important;"
+                        required
+                        placeholder="Tu nombre de usuario"
+                        name="username" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input item-input-outline">
+                  <div class="item-media">
+                    <i class="icon f7-icons">app_badge</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="password" style="font-size: 20px !important;"
+                        required
+                        placeholder="Tu contraseña"
+                        name="password" />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="list">
+              <ul>
+                <button class="button button-large button-fill color-green">
+                  Iniciar Sesión
+                </button>
+              </ul>
+              <div class="block-footer">
+                <p>
+                  CleverSuite es marca registrada de CleverByte IT Consulting
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
